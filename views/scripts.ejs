@@ -1,0 +1,19 @@
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/skel.min.js"></script>
+<script src="assets/js/util.js"></script>
+<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
+<script src="assets/js/main.js"></script>
+<div id="selected-div" style="display:none"><%= selected %></div>
+<script>
+    var selected = $('#selected-div').text();
+    console.log(selected);
+
+    $(`#${selected}-a`).addClass('active');
+
+    /*
+    $('#nav ul a').on('click', function(e){
+        $('#nav ul a').removeClass('active');
+        $(e.target).toggleClass('active');
+    });
+    */
+</script>
