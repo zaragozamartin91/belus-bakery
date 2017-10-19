@@ -24,6 +24,7 @@ app.use(session({
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
+app.set('images', path.join(__dirname, 'public', 'images'));
 app.set('view engine', 'ejs');
 
 app.use(favicon(path.join(__dirname, 'public', 'images', 'favicon.ico')));
@@ -50,7 +51,7 @@ NO ES POSIBLE NAVEGARLOS COMO ESTRUCTURA DE DIRECTORIO */
 app.use(express.static('public'));
 
 /* RUTAS */
-app.use('/', routes);
+app.use('/', routes(app));
 
 /* MANEJO DE ERRORES ------------------------------------------------------------------------------ */
 

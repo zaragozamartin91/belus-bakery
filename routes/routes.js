@@ -3,47 +3,64 @@ const router = express.Router();
 const path = require('path');
 const config = require('../config/main-config');
 const basicAuthParser = require('../utils/basic-auth-parser');
+const formidable = require('formidable');
 const logger = require('log4js').getLogger();
 
 const title = `Belu's bakery`;
 
-router.get('/', (req, res) => {
-    res.redirect(config.mainPath);
-});
+module.exports = function (app) {
+    const imagesDir = app.get('images'); /* /public/images */ 
 
-/* GET home page. */
-router.get(config.mainPath, (req, res) => {
-    logger.debug('HEEEYYY');
-    res.render('index', { title, selected: 'main' });
-});
+    router.get('/', (req, res) => {
+        res.redirect(config.mainPath);
+    });
 
-router.post('/logout', (req, res) => {
-    res.clearCookie('token');
-    res.redirect(config.mainPath);
-});
+    /* GET home page. */
+    router.get(config.mainPath, (req, res) => {
+        logger.debug('HEEEYYY');
+        res.render('index', { title, selected: 'main' });
+    });
 
-router.get('/recipes', (req, res) => {
-    res.render('recipes', { title, selected: 'recipes' });
-});
+    router.post('/logout', (req, res) => {
+        res.clearCookie('token');
+        res.redirect(config.mainPath);
+    });
 
-router.get('/contact', (req, res) => {
-    res.render('contact', { title, selected: 'contact' });
-});
+    router.get('/recipes', (req, res) => {
+        res.render('recipes', { title, selected: 'recipes' });
+    });
 
-router.get('/admin', (req, res) => {
-    if (req.session.ok) return res.render('admin', { title, selected: 'admin' });
+    router.get('/contact', (req, res) => {
+        res.render('contact', { title, selected: 'contact' });
+    });
 
-    const basicAuth = basicAuthParser.parse(req);
-    console.log(basicAuth);
-    const { user, pass } = basicAuth;
-    if ('belen' == user && 'belen' == pass) {
-        req.session.ok = true;
-        return res.render('admin', { title, selected: 'admin' });
-    }
+    router.get('/admin', (req, res) => {
+        if (req.session.ok) return res.render('admin', { title, selected: 'admin' });
 
-    res.status(401);
-    res.setHeader('WWW-Authenticate', 'Basic');
-    res.send('Autenticarse');
-});
+        const basicAuth = basicAuthParser.parse(req);
+        console.log(basicAuth);
+        const { user, pass } = basicAuth;
+        if ('belen' == user && 'belen' == pass) {
+            req.session.ok = true;
+            return res.render('admin', { title, selected: 'admin' });
+        }
 
-module.exports = router;
+        res.status(401);
+        res.setHeader('WWW-Authenticate', 'Basic');
+        res.send('Autenticarse');
+    });
+
+    router.post('/image', (req, res) => {
+        const form = new formidable.IncomingForm();
+        form.uploadDir = imagesDir;
+        form.keepExtensions = true;
+        form.maxFieldsSize = 2 * 1024 * 1024; // 2MB
+
+        form.parse(req, (err, fields, files) => {
+            console.log(files);
+            res.send('Upload exitoso');
+        });
+    });
+
+    return router;
+}
