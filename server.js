@@ -4,6 +4,7 @@ const fs = require('fs');
 const favicon = require('serve-favicon');
 const log4js = require('log4js');
 const bodyParser = require('body-parser');
+const session = require('express-session');
 
 const routes = require('./routes/routes');
 const mainConf = require('./config/main-config');
@@ -12,6 +13,14 @@ const mainConf = require('./config/main-config');
 /* ------------------------------------------------------------------------------------------- */
 
 const app = express();
+// TODO falta configurar usar sesiones con BBDD
+app.set('trust proxy', 1) // trust first proxy
+app.use(session({
+    secret: 'Belus bakery',
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: true, maxAge: 1000 * 60 * 30 }
+}));
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
