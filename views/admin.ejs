@@ -6,25 +6,21 @@
 <body>
 
 	<!-- Header -->
-    <%- include header.ejs %>
+    <%- include admin-header.ejs %>
 
 	<!-- Wrapper -->
 	<div id="wrapper">
 		<!-- Main -->
 		<div id="main">
 
-			<!-- Two -->
 			<section id="one">
 				<div class="container">
-					<h3>Administracion</h3>
-					<p>Administra el contenido del sitio web.</p>
-                    
-                    <form action="/image" method="POST" enctype="multipart/form-data" >
-                        <input type="text" name="name" placeholder="Nombre" />
-                        <input type="file" name="image" id="image-input" />
-                        <input type="submit" value="Subir" />
-                    </form>
-                    
+					<header class="major">
+						<h2>Administración</h2>
+						<p>Administra distintos aspectos del sitio</p>
+					</header>
+					<p>Desde esta vista es posible editar el texto de la pantalla principal y subir o eliminar imágenes. 
+					</p>
 				</div>
 			</section>
 

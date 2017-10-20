@@ -6,7 +6,8 @@ const log4js = require('log4js');
 const bodyParser = require('body-parser');
 const session = require('express-session');
 
-const routes = require('./routes/routes');
+const mainRoutes = require('./routes/main-routes');
+const adminRoutes = require('./routes/admin-routes');
 const mainConf = require('./config/main-config');
 
 
@@ -14,7 +15,7 @@ const mainConf = require('./config/main-config');
 
 const app = express();
 // TODO falta configurar usar sesiones con BBDD
-app.set('trust proxy', 1) // trust first proxy
+app.set('trust proxy', 1); // trust first proxy
 app.use(session({
     secret: 'Belus bakery',
     resave: false,
@@ -51,7 +52,8 @@ NO ES POSIBLE NAVEGARLOS COMO ESTRUCTURA DE DIRECTORIO */
 app.use(express.static('public'));
 
 /* RUTAS */
-app.use('/', routes(app));
+app.use('/', mainRoutes(app));
+app.use('/admin', adminRoutes(app));
 
 /* MANEJO DE ERRORES ------------------------------------------------------------------------------ */
 

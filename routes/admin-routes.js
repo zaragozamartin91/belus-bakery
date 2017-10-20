@@ -5,36 +5,16 @@ const config = require('../config/main-config');
 const basicAuthParser = require('../utils/basic-auth-parser');
 const formidable = require('formidable');
 const logger = require('log4js').getLogger();
+const adminChecker = require('../middleware/admin-checker');
 
-const title = `Belu's bakery`;
+const title = "Belu's bakery";
 
 module.exports = function (app) {
-    const imagesDir = app.get('images'); /* /public/images */ 
+    const imagesDir = app.get('images'); /* /public/images */
+
+    router.use(adminChecker.checkAdmin);
 
     router.get('/', (req, res) => {
-        res.redirect(config.mainPath);
-    });
-
-    /* GET home page. */
-    router.get(config.mainPath, (req, res) => {
-        logger.debug('HEEEYYY');
-        res.render('index', { title, selected: 'main' });
-    });
-
-    router.post('/logout', (req, res) => {
-        res.clearCookie('token');
-        res.redirect(config.mainPath);
-    });
-
-    router.get('/recipes', (req, res) => {
-        res.render('recipes', { title, selected: 'recipes' });
-    });
-
-    router.get('/contact', (req, res) => {
-        res.render('contact', { title, selected: 'contact' });
-    });
-
-    router.get('/admin', (req, res) => {
         if (req.session.ok) return res.render('admin', { title, selected: 'admin' });
 
         const basicAuth = basicAuthParser.parse(req);
@@ -50,7 +30,11 @@ module.exports = function (app) {
         res.send('Autenticarse');
     });
 
-    router.post('/image', (req, res) => {
+    router.get('/image/upload', (req, res) => {
+        res.render('admin-image-upload', { title, selected: 'image-upload' });
+    });
+
+    router.post('/image/upload', (req, res) => {
         const form = new formidable.IncomingForm();
         form.uploadDir = imagesDir;
         form.keepExtensions = true;
@@ -63,4 +47,4 @@ module.exports = function (app) {
     });
 
     return router;
-}
+};

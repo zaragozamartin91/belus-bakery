@@ -1,0 +1,43 @@
+<!DOCTYPE HTML>
+<html>
+
+<%- include head.ejs %>
+
+<body>
+
+	<!-- Header -->
+    <%- include admin-header.ejs %>
+
+	<!-- Wrapper -->
+	<div id="wrapper">
+		<!-- Main -->
+		<div id="main">
+
+			<!-- Two -->
+			<section id="one">
+				<div class="container">
+					<h3>Administracion</h3>
+					<p>Administra el contenido del sitio web.</p>
+                    
+                    <form action="/admin/image/upload" method="POST" enctype="multipart/form-data" >
+                        <input type="text" name="name" placeholder="Nombre" />
+                        <input type="file" name="image" id="image-input" />
+                        <input type="submit" value="Subir" />
+                    </form>
+                    
+				</div>
+			</section>
+
+
+		</div>
+
+		<!-- Footer -->
+		<%- include footer.ejs %>
+
+	</div>
+
+	<!-- Scripts -->
+    <%- include scripts.ejs %>
+</body>
+
+</html>
